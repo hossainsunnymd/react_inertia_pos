@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import {ToastMessage} from "./components/ToastMessage";
 
 type NavItem = {
   label: string;
@@ -95,7 +96,10 @@ export default function SideNavLayout({ title = "", children }: SideNavLayoutPro
           <h1 className="text-lg font-semibold">{title}</h1>
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="p-4 sm:p-6 lg:p-8">
+            <ToastMessage />
+            {children}
+        </main>
       </div>
     </div>
   );
