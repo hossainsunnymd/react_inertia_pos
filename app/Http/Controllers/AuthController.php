@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
-            return redirect()->intended('/users');
+            return redirect()->back()->with(['status' => true, 'message' => 'Login Successfull']);
         }
 
         return back()->with([
@@ -31,6 +31,19 @@ class AuthController extends Controller
             'message' => 'Invalid credentials'
         ]);
 
+    }
+
+    //logout
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
 

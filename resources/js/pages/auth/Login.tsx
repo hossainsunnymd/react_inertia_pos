@@ -1,9 +1,19 @@
-import { useForm } from "@inertiajs/react";
+import { useForm,usePage,router } from "@inertiajs/react";
 import type { ChangeEvent } from "react";
+import { successMessage,errorMessage,ToastMessage } from '../components/ToastMessage';
 
 type LoginForm={
     email: string;
     password: string;
+}
+
+type FlashMessage={
+    message:string,
+    status:boolean
+}
+
+type PageProps={
+    flash:FlashMessage
 }
 
 const Login = () => {
@@ -11,6 +21,8 @@ const Login = () => {
         email: "",
         password: "",
     })
+
+    const {flash}=usePage<PageProps>().props;
 
     const handleForm=(e:ChangeEvent<HTMLInputElement>)=>{
         const { name, value } = e.target;
@@ -28,11 +40,22 @@ const Login = () => {
                     email: "",
                     password: "",
                 });
+
+                if(flash.status==true){
+                    successMessage(flash.message);
+                    setTimeout(()=>{
+                        router.get('/users');
+                    },500);
+                }else{
+                    errorMessage(flash.message);
+                }
+
             },
         });
     }
     return (
         <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
+            <ToastMessage/>
             <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 rounded-lg border border-stone-200 bg-white p-6">
                 <div>
                     <h2 className="text-xl font-semibold text-stone-900">

@@ -71,7 +71,9 @@ export default function SideNavLayout({ title = "", children }: SideNavLayoutPro
           })}
         </nav>
 
-        <div className="px-6 pt-6 text-xs text-slate-500">v1.0.0</div>
+        <div className="px-6 pt-6 text-xs text-slate-500">
+            <Link href={`/logout`}>Logout</Link>
+        </div>
       </aside>
 
       {/* Main area, offset by sidebar width on large screens */}

@@ -1,38 +1,50 @@
-
 import { useState } from "react";
 import Layout from "../Layout";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-const users = [
-    {
-        id: 1,
-        name: "Rahim Uddin",
-        email: "rahim@example.com",
-    },
-    {
-        id: 2,
-        name: "Karim Ahmed",
-        email: "karim@example.com",
-    },
-    {
-        id: 3,
-        name: "Sakib Hasan",
-        email: "sakib@example.com",
-    },
-];
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+type PageLinks = {
+    active: boolean;
+    label: string;
+    page?: number;
+    url?: string;
+};
+
+type PageProps = {
+    users: {
+        data: User[];
+        first_page_url: string;
+        from: number;
+        last_page: number;
+        last_page_url: string;
+        links: PageLinks[];
+        next_page_url?: string;
+        path: string;
+        per_page: number;
+        prev_page_url?: string;
+        to: number;
+        total: number;
+    };
+};
 
 const Users = () => {
     const [search, setSearch] = useState("");
-
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase())
-    );
+    const {
+        data,
+        first_page_url,
+        last_page_url,
+        next_page_url,
+        prev_page_url,
+    } = usePage<PageProps>().props.users;
 
     return (
         <Layout title="Users">
             <div className="p-5 space-y-5">
-
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
@@ -95,8 +107,8 @@ const Users = () => {
                         </thead>
 
                         <tbody className="divide-y divide-stone-100">
-                            {filteredUsers.length > 0 ? (
-                                filteredUsers.map((user) => (
+                            {data.length > 0 ? (
+                                data.map((user) => (
                                     <tr
                                         key={user.id}
                                         className="transition hover:bg-stone-50"
@@ -122,10 +134,6 @@ const Users = () => {
                             )}
                         </tbody>
                     </table>
-                </div>
-
-                <div className="text-sm text-stone-500">
-                    Showing {filteredUsers.length} of {users.length} users
                 </div>
             </div>
         </Layout>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[AuthController::class,'loginPage'])->name('login');
 
 Route::post('/login',[AuthController::class,'login'])->name('login.post');
+Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
