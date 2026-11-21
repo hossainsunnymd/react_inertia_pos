@@ -63,7 +63,7 @@ const UserSave = () => {
                         router.get("/users");
                     }, 500);
                 } else {
-                    errorMessage(flash.message);
+                    errorMessage('Something went wrong!');
                 }
             },
 
@@ -83,7 +83,7 @@ const UserSave = () => {
         <Layout title={pageTitle}>
             <form
                 onSubmit={handleSubmit}
-                className="max-w-xl space-y-6 rounded-lg border border-stone-200 bg-white p-6 mx-auto"
+                className="max-w-full space-y-6 rounded-lg border border-stone-200 bg-white p-6 mx-auto"
             >
                 <div>
                     <label

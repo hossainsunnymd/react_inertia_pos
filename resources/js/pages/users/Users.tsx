@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Layout from "../Layout";
-import { Link, usePage,router } from "@inertiajs/react";
-import type {Page} from "@inertiajs/core";
-import {successMessage,errorMessage} from '../components/ToastMessage'
+import { Link, usePage, router } from "@inertiajs/react";
+import type { Page } from "@inertiajs/core";
+import { successMessage, errorMessage } from "../components/ToastMessage";
 
 type User = {
     id: number;
@@ -17,10 +17,10 @@ type PageLinks = {
     url?: string;
 };
 
-type FlashMessage={
-    status:boolean;
-    message:string;
-}
+type FlashMessage = {
+    status: boolean;
+    message: string;
+};
 
 type PageProps = {
     users: {
@@ -39,21 +39,20 @@ type PageProps = {
     };
 };
 
-const handleDelete=(id:number):void=>{
-    if(confirm('Are you sure to delete this user?')){
-            router.delete(`/users/${id}`,{
-        onSuccess:(page:Page)=>{
-            console.log(page);
-            const flash=page.props.flash as FlashMessage
-            if(flash.status==true){
-                successMessage(flash.message);
-            }else{
-                errorMessage(flash.message);
-            }
-        }
-    });
+const handleDelete = (id: number): void => {
+    if (confirm("Are you sure to delete this user?")) {
+        router.delete(`/users/${id}`, {
+            onSuccess: (page: Page) => {
+                const flash = page.props.flash as FlashMessage;
+                if (flash.status == true) {
+                    successMessage(flash.message);
+                } else {
+                    errorMessage('something went wrong!');
+                }
+            },
+        });
     }
-}
+};
 
 const Users = () => {
     const [search, setSearch] = useState("");
@@ -151,7 +150,12 @@ const Users = () => {
                                             >
                                                 Edit
                                             </Link>
-                                            <button onClick={()=>handleDelete(user.id)} className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-sm text-white mx-2">
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(user.id)
+                                                }
+                                                className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-sm text-white mx-2"
+                                            >
                                                 Delete
                                             </button>
                                         </td>

@@ -14,12 +14,10 @@ type SideNavLayoutProps = {
 
 // Edit these to match your app's pages
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Orders", href: "/orders" },
-  { label: "Products", href: "/products" },
-  { label: "Customers", href: "/customers" },
-  { label: "Reports", href: "/reports" },
-  { label: "Settings", href: "/settings" },
+  { label: "Dashboard", href: "/dashboard"},
+  { label: "Users", href: "/users" },
+  { label: "Customers", href: "/customers"},
+  { label: "Products", href: "/products"},
 ];
 
 export default function SideNavLayout({ title = "", children }: SideNavLayoutProps) {
