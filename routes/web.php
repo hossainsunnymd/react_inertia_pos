@@ -30,7 +30,7 @@ Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->
 //categories
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/category-save', [CategoryController::class, 'categoryrSavePage'])->name('categories.create');
+Route::get('/category-save', [CategoryController::class, 'categorySavePage'])->name('categories.create');
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');

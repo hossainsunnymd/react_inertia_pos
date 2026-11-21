@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard"},
   { label: "Users", href: "/users" },
   { label: "Customers", href: "/customers"},
+  { label: "Categories", href: "/categories"},
   { label: "Products", href: "/products"},
 ];
 
