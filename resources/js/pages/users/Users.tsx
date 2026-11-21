@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Layout from "../Layout";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, usePage,router } from "@inertiajs/react";
+import type {Page} from "@inertiajs/core";
+import {successMessage,errorMessage} from '../components/ToastMessage'
 
 type User = {
     id: number;
@@ -14,6 +16,11 @@ type PageLinks = {
     page?: number;
     url?: string;
 };
+
+type FlashMessage={
+    status:boolean;
+    message:string;
+}
 
 type PageProps = {
     users: {
@@ -31,6 +38,22 @@ type PageProps = {
         total: number;
     };
 };
+
+const handleDelete=(id:number):void=>{
+    if(confirm('Are you sure to delete this user?')){
+            router.delete(`/users/${id}`,{
+        onSuccess:(page:Page)=>{
+            console.log(page);
+            const flash=page.props.flash as FlashMessage
+            if(flash.status==true){
+                successMessage(flash.message);
+            }else{
+                errorMessage(flash.message);
+            }
+        }
+    });
+    }
+}
 
 const Users = () => {
     const [search, setSearch] = useState("");
@@ -57,7 +80,7 @@ const Users = () => {
                     </div>
 
                     <Link
-                        href="/user-save"
+                        href={`/user-save?id=${0}`}
                         className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         <span className="text-lg leading-none">+</span>
@@ -103,6 +126,7 @@ const Users = () => {
                                 <th className="px-4 py-3 font-semibold text-stone-700">
                                     Email
                                 </th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
 
@@ -119,6 +143,17 @@ const Users = () => {
 
                                         <td className="whitespace-nowrap px-4 py-3 text-stone-600">
                                             {user.email}
+                                        </td>
+                                        <td className="whitespace-nowrap px-4 py-3 text-stone-600">
+                                            <Link
+                                                href={`/user-save?id=${user.id}`}
+                                                className="bg-green-500 hover:bg-green-700 px-6 py-2 rounded-sm text-white"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button onClick={()=>handleDelete(user.id)} className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-sm text-white mx-2">
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 ))

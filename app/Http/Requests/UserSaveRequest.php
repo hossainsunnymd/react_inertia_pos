@@ -24,8 +24,10 @@ class UserSaveRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => $this->isMethod('PUT')?'required|string|email|max:255|unique:users,email,'.$this->route('user')->id:'required|string|email|max:255',
+              'password' => $this->isMethod('POST')
+            ? 'required|string|min:6|confirmed'
+            : 'nullable|string|min:6|confirmed',
         ];
     }
 }

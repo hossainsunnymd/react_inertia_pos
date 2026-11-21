@@ -6,6 +6,7 @@ use App\Http\Requests\UserSaveRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,7 +28,6 @@ class UserController extends Controller
 
     public function store(UserSaveRequest $request): RedirectResponse
     {
-
         User::create($request->validated());
         return back()->with([
             'status' => true,
@@ -35,10 +35,16 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserSaveRequest $request, User $user): RedirectResponse
+    public function update(User $user, UserSaveRequest $request) : RedirectResponse
     {
+        $data=$request->validated();
+        if(isset($data['password']) && !empty($data['password'])){
+         $data['password']=Hash::make($data['password']);
+        }else{
+            unset($data['password']);
+        }
 
-        $user->update($request->validated());
+        $user->update($data);
         return back()->with([
             'status' => true,
             'message' => 'User updated successfully'

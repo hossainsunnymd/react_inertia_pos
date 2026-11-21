@@ -13,5 +13,5 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/user-save', [UserController::class, 'userSavePage'])->name('users.create');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');

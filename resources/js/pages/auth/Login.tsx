@@ -1,62 +1,61 @@
-import { useForm,usePage,router } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
+import type { Page } from "@inertiajs/core";
 import type { ChangeEvent } from "react";
-import { successMessage,errorMessage,ToastMessage } from '../components/ToastMessage';
+import {
+    successMessage,
+    errorMessage,
+    ToastMessage,
+} from "../components/ToastMessage";
 
-type LoginForm={
+type LoginForm = {
     email: string;
     password: string;
-}
+};
 
-type FlashMessage={
-    message:string,
-    status:boolean
-}
-
-type PageProps={
-    flash:FlashMessage
-}
+type FlashMessage = {
+    message: string;
+    status: boolean;
+};
 
 const Login = () => {
-    const { data, setData, post, processing, errors } = useForm<LoginForm>({
-        email: "",
-        password: "",
-    })
-
-    const {flash}=usePage<PageProps>().props;
-
-    const handleForm=(e:ChangeEvent<HTMLInputElement>)=>{
-        const { name, value } = e.target;
-        setData({
-            ...data,
-            [name]: value
+    const { data, setData, post, processing, errors, reset } =
+        useForm<LoginForm>({
+            email: "",
+            password: "",
         });
-    }
 
-    const handleSubmit=(e:ChangeEvent<HTMLFormElement>)=>{
+    const handleForm = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setData(name as keyof LoginForm, value);
+    };
+
+    const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post("/login",{
-            onSuccess: () => {
-                setData({
-                    email: "",
-                    password: "",
-                });
-
-                if(flash.status==true){
+        post("/login", {
+            onSuccess: (page: Page) => {
+                reset();
+                const flash = page.props.flash as FlashMessage;
+                if (flash.status == true) {
                     successMessage(flash.message);
-                    setTimeout(()=>{
-                        router.get('/users');
-                    },500);
-                }else{
+                    setTimeout(() => {
+                        router.get("/users");
+                    }, 500);
+                } else {
                     errorMessage(flash.message);
                 }
-
+            },
+            onError: () => {
+                errorMessage("Please check the form errors.");
             },
         });
-    }
+    };
     return (
         <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
-            <ToastMessage/>
-            <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 rounded-lg border border-stone-200 bg-white p-6">
+            <ToastMessage />
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-sm space-y-6 rounded-lg border border-stone-200 bg-white p-6"
+            >
                 <div>
                     <h2 className="text-xl font-semibold text-stone-900">
                         Sign in
@@ -82,10 +81,11 @@ const Login = () => {
                         value={data.email}
                         onChange={handleForm}
                     />
-                    {
-                        errors.email &&
-                        <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-                    }
+                    {errors.email && (
+                        <p className="mt-2 text-sm text-red-600">
+                            {errors.email}
+                        </p>
+                    )}
                 </div>
 
                 <div>
@@ -104,10 +104,11 @@ const Login = () => {
                         value={data.password}
                         onChange={handleForm}
                     />
-                    {
-                        errors.password &&
-                        <p className="mt-2 text-sm text-red-600">{errors.password}</p>
-                    }
+                    {errors.password && (
+                        <p className="mt-2 text-sm text-red-600">
+                            {errors.password}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-between text-sm">
