@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductSaveRequest;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,15 +16,16 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
 
-        $products = Product::paginate(10);
-        return Inertia::render('products/products', compact('products'));
+        $products = Product::with('category')->paginate(10);
+        return Inertia::render('products/Products', compact('products'));
     }
 
     public function categorySavePage(Request $request): Response
     {
 
         $product = Product::find($request->id);
-        return Inertia::render('products/ProductSave', compact('product'));
+        $categories=Category::all();
+        return Inertia::render('products/ProductSave', compact('product','categories'));
     }
 
     public function store(ProductSaveRequest $request): RedirectResponse
@@ -56,9 +58,9 @@ class ProductController extends Controller
 
         $data = $request->validated();
 
-        if (isset($data['image']) && !empty($data['image'])) {
+        if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::delete($product->image);
+                Storage::disk('public')->delete($product->image);
             }
 
             $file = $request->file('image');
@@ -75,9 +77,9 @@ class ProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         if ($product->image) {
-            Storage::delete($product->image);
+            Storage::disk('public')->delete($product->image);
         }
-        
+
         $product->delete();
         return back()->with(['status' => true, 'message' => 'Product deleted successfully']);
     }

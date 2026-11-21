@@ -4,17 +4,14 @@ import type { ChangeEvent, SubmitEvent } from "react";
 import { successMessage, errorMessage } from "../components/ToastMessage";
 import type { Page } from "@inertiajs/core";
 
-type Customer = {
+interface Customer {
     name: string;
     phone?: string;
     address?: string;
 };
 
-type ExistingCustomer = {
+interface ExistingCustomer extends Customer{
     id: number;
-    name: string;
-    phone?: string;
-    address?: string;
 };
 
 type FlashMessage = {

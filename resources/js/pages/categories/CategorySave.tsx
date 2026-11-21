@@ -4,13 +4,12 @@ import type { ChangeEvent, SubmitEvent } from "react";
 import { successMessage, errorMessage } from "../components/ToastMessage";
 import type { Page } from "@inertiajs/core";
 
-type Category = {
+interface Category {
     name: string;
 };
 
-type ExistingCategory = {
+interface ExistingCategory extends Category{
     id: number;
-    name: string;
 };
 
 type FlashMessage = {

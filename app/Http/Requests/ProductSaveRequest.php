@@ -23,12 +23,12 @@ class ProductSaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id'=>'required|number|exists:categories,id',
+            'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:255',
             'description'=>'nullable|string|max:255',
-            'price'=>'required|number',
+            'price'=>'required|numeric',
             'qty'=>'required|integer',
-            'image'=>'nullable|string'
+            'image'=>$this->hasFile('image')? 'nullable|image|mimes:jpes,jpg,png,gif,svg|max:2048':'nullable|string|max:255'
         ];
     }
 }
