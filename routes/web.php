@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 //customers
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/customer-list', [CustomerController::class, 'getCustomers']);
 Route::get('/customer-save', [CustomerController::class, 'customerSavePage'])->name('customers.create');
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
@@ -39,8 +41,16 @@ Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])-
 //products
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product-list', [ProductController::class, 'getProducts']);
 Route::get('/product-save', [ProductController::class, 'categorySavePage'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+
+//invoices
+
+Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+Route::get('/invoice-save', [InvoiceController::class, 'invoiceSavePage'])->name('invoices.create');
+Route::post('/invoices', [InvoiceController::class, 'store'])->name('invoices.store');
 

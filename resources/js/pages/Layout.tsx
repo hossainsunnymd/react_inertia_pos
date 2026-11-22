@@ -19,6 +19,7 @@ const navItems: NavItem[] = [
   { label: "Customers", href: "/customers"},
   { label: "Categories", href: "/categories"},
   { label: "Products", href: "/products"},
+  { label: "Invoices", href: "/invoices"},
 ];
 
 export default function SideNavLayout({ title = "", children }: SideNavLayoutProps) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductSaveRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,16 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
+
+    public function getProducts(Request $request):JsonResponse{
+
+        $products=Product::paginate(10);
+        return response()->json([
+            'status'=>true,
+            'data'=>$products,
+            'message'=>'product fetch successfully'
+        ],200);
+    }
     public function index(Request $request): Response
     {
 

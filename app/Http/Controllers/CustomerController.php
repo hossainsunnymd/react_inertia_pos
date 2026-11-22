@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerSaveRequest;
 use App\Models\Customer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,6 +12,16 @@ use Inertia\Response;
 
 class CustomerController extends Controller
 {
+
+    public function getCustomers(Request $request):JsonResponse{
+        $customers=Customer::paginate(10);
+        return response()->json([
+            'status'=>true,
+            'data'=>$customers,
+            'message'=>'Customers retrived successfully'
+        ],200);
+
+    }
     public function index(Request $request): Response
     {
 
