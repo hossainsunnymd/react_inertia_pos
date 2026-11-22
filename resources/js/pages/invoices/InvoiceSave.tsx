@@ -2,7 +2,7 @@ import Layout from "../Layout";
 import { useHttp } from "@inertiajs/react";
 import { useEffect, useReducer, useState } from "react";
 import Select from "react-select";
-import { useForm } from "@inertiajs/react";
+import { useForm,router } from "@inertiajs/react";
 import type { Page } from "@inertiajs/core";
 import { successMessage, errorMessage } from "../components/ToastMessage";
 
@@ -275,12 +275,12 @@ const InvoiceSave = () => {
     // Add Product
     const handleAddProduct = () => {
         if (!selectedProduct) {
-            alert("Please select a product.");
+            errorMessage("Please select a product.");
             return;
         }
 
         if (state.qty > selectedProduct.qty) {
-            alert("Insufficient product stock.");
+            errorMessage("Insufficient product stock.");
             return;
         }
 
@@ -316,12 +316,12 @@ const InvoiceSave = () => {
 
     const handleSaveInvoice = () => {
         if (!state.customer_id) {
-            alert("Please select a customer.");
+            errorMessage("Please select a customer.");
             return;
         }
 
         if (state.invoiceItems.length === 0) {
-            alert("Please add at least one product.");
+            errorMessage("Please add at least one product.");
             return;
         }
 
@@ -331,6 +331,9 @@ const InvoiceSave = () => {
 
                 if (flash.status == true) {
                     successMessage(flash.message);
+                    setTimeout(()=>{
+                        router.get('/invoices');
+                    },500);
                 } else {
                     errorMessage(flash.message);
                 }

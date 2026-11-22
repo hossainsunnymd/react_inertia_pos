@@ -71,8 +71,28 @@ export default function SideNavLayout({ title = "", children }: SideNavLayoutPro
           })}
         </nav>
 
-        <div className="px-6 pt-6 text-xs text-slate-500">
-            <Link href={`/logout`}>Logout</Link>
+        <div className="border-t border-slate-700/80 px-3 pt-4">
+          <Link
+            href="/logout"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2.5 text-sm font-medium text-slate-200 shadow-sm transition-colors hover:border-rose-400/40 hover:bg-rose-500/10 hover:text-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+          >
+            <svg
+              aria-hidden="true"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.8}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 15l3-3m0 0-3-3m3 3H9.75"
+              />
+            </svg>
+            <span>Logout</span>
+          </Link>
         </div>
       </aside>
 

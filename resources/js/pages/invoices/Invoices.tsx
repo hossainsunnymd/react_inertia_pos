@@ -1,24 +1,10 @@
 import { useState } from "react";
 import Layout from "../Layout";
-import { Link, usePage, router } from "@inertiajs/react";
-import type { Page } from "@inertiajs/core";
-import { successMessage, errorMessage } from "../components/ToastMessage";
+import { Link, usePage } from "@inertiajs/react";
+import InvoiceDetails, { type InvoiceDetailsData } from "./InvoiceDetails";
 
-type Customer = {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-};
-
-type Invoices = {
-    id: number;
+type Invoices = InvoiceDetailsData & {
     customer_id: number;
-    total: number;
-    discount: number;
-    vat: number;
-    payable: number;
-    customer: Customer;
 };
 
 type PageLinks = {
@@ -26,11 +12,6 @@ type PageLinks = {
     label: string;
     page?: number;
     url?: string;
-};
-
-type FlashMessage = {
-    status: boolean;
-    message: string;
 };
 
 type PageProps = {
@@ -50,23 +31,10 @@ type PageProps = {
     };
 };
 
-const handleDelete = (id: number): void => {
-    if (confirm("Are you sure to delete this Invoice?")) {
-        router.delete(`/invoices/${id}`, {
-            onSuccess: (page: Page) => {
-                const flash = page.props.flash as FlashMessage;
-                if (flash.status == true) {
-                    successMessage(flash.message);
-                } else {
-                    errorMessage(flash.message);
-                }
-            },
-        });
-    }
-};
-
 const Invoices = () => {
     const [search, setSearch] = useState("");
+    const [selectedInvoice, setSelectedInvoice] =
+        useState<Invoices | null>(null);
     const {
         data,
         first_page_url,
@@ -148,7 +116,9 @@ const Invoices = () => {
                                 <th className="px-4 py-3 font-semibold text-stone-700">
                                     Payable
                                 </th>
-                                <th>Actions</th>
+                                <th className="px-4 py-3 font-semibold text-stone-700">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
 
@@ -179,27 +149,22 @@ const Invoices = () => {
                                         </td>
 
                                         <td className="whitespace-nowrap px-4 py-3 text-stone-600">
-                                            {/* <Link
-                                                href={`/category-save?id=${category.id}`}
-                                                className="bg-green-500 hover:bg-green-700 px-6 py-2 rounded-sm text-white"
-                                            >
-                                                Edit
-                                            </Link>
                                             <button
                                                 onClick={() =>
-                                                    handleDelete(category.id)
+                                                    setSelectedInvoice(invoice)
                                                 }
-                                                className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-sm text-white mx-2"
+                                                className="rounded-md bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                type="button"
                                             >
-                                                Delete
-                                            </button> */}
+                                                View products
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
                                     <td
-                                        colSpan={4}
+                                        colSpan={7}
                                         className="px-4 py-10 text-center text-stone-500"
                                     >
                                         No invoice found.
@@ -210,6 +175,12 @@ const Invoices = () => {
                     </table>
                 </div>
             </div>
+            {selectedInvoice && (
+                <InvoiceDetails
+                    invoice={selectedInvoice}
+                    onClose={() => setSelectedInvoice(null)}
+                />
+            )}
         </Layout>
     );
 };
