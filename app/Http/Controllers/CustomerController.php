@@ -7,19 +7,21 @@ use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CustomerController extends Controller
 {
 
-    public function getCustomers(Request $request):JsonResponse{
-        $customers=Customer::paginate(10);
+    public function getCustomers(Request $request): JsonResponse
+    {
+        $customers = Customer::paginate(10);
         return response()->json([
-            'status'=>true,
-            'data'=>$customers,
-            'message'=>'Customers retrived successfully'
-        ],200);
+            'status' => true,
+            'data' => $customers,
+            'message' => 'Customers retrived successfully'
+        ], 200);
 
     }
     public function index(Request $request): Response
@@ -45,12 +47,15 @@ class CustomerController extends Controller
     public function update(CustomerSaveRequest $request, Customer $customer): RedirectResponse
     {
 
+        Gate::authorize('update', $customer);
+
         $customer->update($request->validated());
         return back()->with(['status' => true, 'message' => 'Customer updated successfully']);
     }
 
     public function destroy(Customer $customer): RedirectResponse
     {
+        Gate::authorize('delete', $customer);
         $customer->delete();
         return back()->with(['status' => true, 'message' => 'Customer deleted successfully']);
     }
